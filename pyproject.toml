@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "grok-cli"
+version = "0.1.0"
+description = "An open-source AI agent that brings the power of Grok directly into your terminal"
+authors = ["FariaScripters"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+openai = "^1.12.0"
+rich = "^13.7.0"
+typer = "^0.9.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry-core.backend"
+
+[tool.poetry.scripts]
+grok = "grok_cli.main:app"
