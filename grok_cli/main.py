@@ -1,9 +1,18 @@
 """Main entry point for the Grok CLI application."""
 import typer
 from rich.console import Console
+from rich.markdown import Markdown
+from rich.syntax import Syntax
+from rich.panel import Panel
+from rich.prompt import Prompt
+import backoff
+import asyncio
+from typing import List, Optional
+from openai import AsyncOpenAI, ChatCompletion
 
 from .commands.chat import app as chat_app
 from .auth.login import login, logout
+from .config import Config
 
 app = typer.Typer(
     help="An open-source AI agent that brings the power of Grok directly into your terminal",
@@ -14,6 +23,7 @@ app = typer.Typer(
 app.command()(login)
 app.command()(logout)
 app.add_typer(chat_app, name="chat", help="Chat with Grok AI")
+console = Console()
 config = Config()
 
 def setup_client() -> AsyncOpenAI:

@@ -5,21 +5,22 @@ from rich.markdown import Markdown
 from openai import AsyncOpenAI
 import asyncio
 import backoff
-from typing import Optional
 
-from ..auth.login import get_credentials
+from ..config import Config
+from ..models import list_available_models, DEFAULT_MODEL
 
 app = typer.Typer()
 console = Console()
+config = Config()
 
 @app.command()
 def chat(
     message: str = typer.Argument(..., help="Message to send to Grok"),
-    model: str = typer.Option("grok-v2", help="Model version to use"),
+    model: str = typer.Option(DEFAULT_MODEL, help="Model version to use. Available models: " + ", ".join(list_available_models())),
     temperature: float = typer.Option(0.7, help="Temperature for response generation"),
 ):
     """Start a chat with Grok."""
-    api_key = get_credentials()
+    api_key = config.get("XAI_API_KEY")
     if not api_key:
         console.print("[red]Please login first using 'grok login'[/red]")
         raise typer.Exit(1)
